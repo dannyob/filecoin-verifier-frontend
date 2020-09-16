@@ -14,7 +14,7 @@ export const config = {
         name: 'Localhost Testnet',
         code: 1,
         url: 'ws://localhost:1234/rpc/v0',
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.X7m_35dTJ_jH9xmPXuNfulGsRn69z1tUlCo1-9JnDNU'
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.vJ1gXfYyoz_UYVC7ugYBS5Cj-Sru4z6STyJDK4kwKtw'
     },{
         name: 'Localhost Net',
         code: 461,

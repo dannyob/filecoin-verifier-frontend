@@ -50,7 +50,7 @@ export class LedgerWallet {
     public getAccounts = async (nStart = 0, nEnd = 5) => {
         const paths = []
         for (let i = nStart; i < nEnd; i += 1) {
-          paths.push(`m/44'/${this.lotusNode.code}'/0/0/${i}`)
+          paths.push(`m/44'/${this.lotusNode.code}'/1/0/${i}`)
         }
         const accounts = await mapSeries(paths, async path => {
             const returnLoad = await this.ledgerApp.getAddressAndPubKey(path)
@@ -62,12 +62,12 @@ export class LedgerWallet {
 
     public sign = async (filecoinMessage:any, indexAccount:number) => {
         const serializedMessage = signer.transactionSerialize(
-          filecoinMessage.toString()
+          filecoinMessage
         )
         const signedMessage = this.handleErrors(
           await this.ledgerApp.sign(`m/44'/${this.lotusNode.code}'/1/0/${indexAccount}`, Buffer.from(serializedMessage, 'hex'))
         )
-        return signedMessage.toString('base64')
+        return signedMessage//.toString('base64')
     }
 
     private handleErrors = (response:any) => {
