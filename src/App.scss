@@ -54,17 +54,36 @@
     }
 
     .headertitles {
-      font-weight: bold;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .accounttype {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
       font-size: 12px;
-      padding-bottom: 7px;
+      line-height: 16px;
+      letter-spacing: 0.4px;
     }
 
     .datacap {
       padding-left: 5px;
     }
 
+    .datacapdata img{
+      margin-right: 8px;
+      float: right;
+    }
+
     .copyaddress {
       padding-left: 5px;
+      float: right;
+      margin-right: 8px;
+      margin-top: 6px;
     }
 
     .notification {
@@ -72,13 +91,16 @@
       cursor: pointer;
     }
 
+
     .search {
       position: relative;
+
       svg {
         position: absolute;
         top: 30px;
         left: 20px;
       }
+
       input {
         margin-top: 16px;
         box-shadow: none;
@@ -86,12 +108,18 @@
         width: 300px;
         padding-left: 48px;
       }
-      input::placeholder{
+
+      input::placeholder {
         color: #656565;
       }
     }
 
-    a, a:focus, a:visited, a:link, a:hover, a:target {
+    a,
+    a:focus,
+    a:visited,
+    a:link,
+    a:hover,
+    a:target {
       padding: 8px 20px;
       text-decoration: none;
       color: black;
@@ -138,7 +166,7 @@
   .accountselectholder {
     width: 250px;
     position: absolute;
-    padding: 24px 16px;
+    padding: 5px 16px;
     top: 70px;
     left: 0px;
     border: 1px solid #C7C7C7;
@@ -148,6 +176,16 @@
 
     .viewswitch {
       padding: 10px;
+      width: 20px;
+    }
+
+    .accountaddress {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 20px;
+      line-height: 28px;
+      color: #1A1A1A;
     }
 
     .accountentry {
@@ -156,11 +194,34 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-family: monospace;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 4px;
+      border-color: #C7C7C7;
+      margin: 6px -10px;
+    }
+
+    .datacapdata {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .accountdata{
+      padding-left: 6px;
     }
 
     .importseedphrase {
-      padding-top: 20px;
-      font-weight: bold;
+      top: calc(50% - 20px/2);
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: #0090FF;
     }
   }
 
@@ -171,6 +232,7 @@
       background-size: cover;
       background-repeat: no-repeat;
     }
+
     .info {
       background: linear-gradient(180deg, #0090FF 0%, #39C1CB 99.99%, rgba(0, 144, 255, 0) 100%);
       position: relative;
@@ -178,10 +240,10 @@
 
       .textinfo {
         position: absolute;
-        left: 0; 
-        right: 0; 
-        margin-left: auto; 
-        margin-right: auto; 
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
         top: -50px;
         max-width: 1280px;
         color: #fff;
@@ -223,7 +285,7 @@
 
   .main {
     max-width: 1280px;
-    margin:auto;
+    margin: auto;
     min-height: 100%;
     margin-top: 20px;
 
@@ -233,22 +295,21 @@
 
       .tabs {
         display: flex;
-        
+
         >div {
           padding: 10px;
           margin-right: 10px;
           border-bottom: 1px solid #ccc;
           cursor: pointer;
         }
+
         >div.selected {
           border-bottom: 1px solid #0090FF;
           color: #0090FF;
         }
       }
 
-      .tabssadd {
-
-      }
+      .tabssadd {}
     }
 
     .nodata {
@@ -262,13 +323,14 @@
     form {
       padding-bottom: 20px;
 
-      .datacapholder{
+      .datacapholder {
         display: flex;
         max-width: 480px;
 
-        .datacap{
+        .datacap {
           flex-grow: 1;
         }
+
         .datacapext {
           padding-top: 33px;
         }
@@ -302,6 +364,7 @@
     .viewswitch {
       padding: 10px;
       margin: 10px;
+      float: right;
     }
   }
 
@@ -317,7 +380,7 @@
 
 .wizzardfirst {
   display: flex;
-  
+
   .wizzardElement {
     flex-grow: 1;
     align-items: center;
@@ -368,7 +431,7 @@
   display: flex;
   justify-content: center;
 
-  button  {
+  button {
     margin-top: 50px;
     height: 40px;
     box-sizing: border-box;
@@ -394,14 +457,14 @@
     -moz-letter-spacing: 0.2px;
     -ms-letter-spacing: 0.2px;
     letter-spacing: 0.2px;
-    font-family: 'inter-semi-bold',-apple-system,BlinkMacSystemFont,arial,sans-serif;
+    font-family: 'inter-semi-bold', -apple-system, BlinkMacSystemFont, arial, sans-serif;
     -webkit-transition: 200ms ease all;
     transition: 200ms ease all;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     background-color: #0090FF;
     color: #ffffff;
@@ -416,7 +479,7 @@
 
   thead {
     font-weight: bold;
-    
+
     tr {
       border-bottom: 1px solid #000;
     }
