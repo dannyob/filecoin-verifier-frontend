@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Overview from './Overview'
-import Landing from './Landing'
+// import Landing from './Landing'
+import PrivateVerifiers from './PrivateVerifiers'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -173,7 +174,7 @@ class App extends Component<{},States> {
         { this.context.isLoading === true ?
           <div className="walletpicker"><LoaderSpinner /></div>
         : this.context.isLogged === false ?
-            <Landing/>
+            <PrivateVerifiers/>
          :
           <Overview ref={this.child}/>
         }

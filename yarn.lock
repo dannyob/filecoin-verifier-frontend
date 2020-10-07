@@ -1707,8 +1707,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@keyko-io/filecoin-verifier-tools@./deps/filecoin-verifier-tools":
-  version "0.5.1"
+"@keyko-io/filecoin-verifier-tools@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@keyko-io/filecoin-verifier-tools/-/filecoin-verifier-tools-0.5.2.tgz#fa01a2330c64f97e755c7427f116495d114f2e17"
+  integrity sha512-nFQ1hRkjFsAE8lDkCKJl5ZuqPMciwDYzTsIEyhaZZuEFFKe7HC5CfVP1a9dcFChTans/PxSoaodMdl5BZUN09Q==
   dependencies:
     "@filecoin-shipyard/lotus-client-provider-nodejs" "0.0.5"
     "@filecoin-shipyard/lotus-client-rpc" "0.0.11"
