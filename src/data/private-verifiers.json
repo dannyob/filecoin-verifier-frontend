@@ -6,7 +6,7 @@
             "use_case": "Use Case",
             "location": "US",
             "website": "verify.glif.io",
-            "total_datacap": 1000000000000000,
+            "total_datacap": "1 PB",
             "email": "verify@a.com",
             "private_request": "No"
         }

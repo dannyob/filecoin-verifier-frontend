@@ -6,7 +6,7 @@
             "use_case": "General verifier",
             "location": "US",
             "website": "google.com",
-            "total_datacap": 1000000000000000,
+            "total_datacap": "1 PB",
             "email": "notarya@a.com",
             "private_request": "Yes"
         },
@@ -16,7 +16,7 @@
             "use_case": "General verifier",
             "location": "EUR",
             "website": "google.com",
-            "total_datacap": 1000000000000000,
+            "total_datacap": "1 PB",
             "email": "notaryb@a.com",
             "private_request": "No"
         },
@@ -26,7 +26,7 @@
             "use_case": "Automatic Verifier",
             "location": "US",
             "website": "verify.glif.io",
-            "total_datacap": 1000000000000000,
+            "total_datacap": "1 PB",
             "email": "verify@a.com",
             "private_request": "No"
         }
