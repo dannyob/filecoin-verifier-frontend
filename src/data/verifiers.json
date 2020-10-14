@@ -7,7 +7,8 @@
             "location": "US",
             "website": "google.com",
             "total_datacap": 1000000000000000,
-            "email": "notarya@a.com"
+            "email": "notarya@a.com",
+            "private_request": "Yes"
         },
         {
             "id": 2,
@@ -16,7 +17,8 @@
             "location": "EUR",
             "website": "google.com",
             "total_datacap": 1000000000000000,
-            "email": "notaryb@a.com"
+            "email": "notaryb@a.com",
+            "private_request": "No"
         }
     ]
 

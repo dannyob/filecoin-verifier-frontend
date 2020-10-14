@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import Preonboarding from './pages/Preonboarding';
 import Onboarding from './pages/Onboarding';
 import Landing from './pages/Landing';
+import LandingB from './pages/LandingB';
 import history from './context/History';
 import Verifiers from './pages/Verifiers';
 
@@ -22,6 +23,7 @@ ReactDOM.render(
           <Route exact path={'/app'} component={App} ></Route>
           <Route exact path={'/wallet'} component={Preonboarding} ></Route>
           <Route exact path={'/landing'} component={Landing} ></Route>
+          <Route exact path={'/landingB'} component={LandingB} ></Route>
           <Route exact path={'/verifiers'} component={Verifiers} ></Route>
         </Switch>
       </Router>

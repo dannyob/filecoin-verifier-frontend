@@ -27,8 +27,9 @@ type ModalProps = {
         use_case: string,
         location: string,
         website: string,
-        total_datacap: number
-        email: string
+        total_datacap: number,
+        email: string,
+        private_request: string
     }
 }
 
@@ -180,11 +181,14 @@ class MakeRequestModal extends Component<ModalProps, States> {
                             </div>
                             <div className="methodselection">
                                 <div className="methodlabel"> Select the method to send your request</div>
+                                {this.props.verifier.private_request === "Yes" ? 
                                 <CheckBox
                                     name="emailMethod"
                                     value={this.state.emailMethod}
                                     onChange={this.handleChange}
                                 >Email - send message</CheckBox>
+                                : null
+                            }
                                 <CheckBox
                                     name="gitHubMethod"
                                     value={this.state.gitHubMethod}
