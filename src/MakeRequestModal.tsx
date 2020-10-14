@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Wallet } from './context/Index'
 import { config } from './config'
 // @ts-ignore
-import { dispatchCustomEvent, Input, ButtonPrimary, SelectMenu, LoaderSpinner } from "slate-react-system";
+import { dispatchCustomEvent, Input, ButtonPrimary, SelectMenu, LoaderSpinner, CheckBox } from "slate-react-system";
 
 type States = {
     address: string
@@ -16,6 +16,8 @@ type States = {
     submitLoading: boolean
     verifierName: string
     publicProfile: string
+    emailMethod: boolean,
+    gitHubMethod: boolean
 }
 
 type ModalProps = {
@@ -46,7 +48,9 @@ class MakeRequestModal extends Component<ModalProps, States> {
             datacapExt: 'TiB',
             submitLoading: false,
             verifierName: this.props.verifier.name,
-            publicProfile: this.props.verifier.website
+            publicProfile: this.props.verifier.website,
+            emailMethod: false,
+            gitHubMethod: false
         }
     }
 
@@ -67,7 +71,7 @@ class MakeRequestModal extends Component<ModalProps, States> {
                 verifierEmail: this.props.verifier.email,
                 verifierName: this.state.verifierName,
                 name: this.state.organization,
-                publicProfile:  this.props.verifier.website,
+                publicProfile: this.props.verifier.website,
                 useCase: this.state.useplan,
                 contact: this.state.contact,
                 address: this.state.address,
@@ -173,6 +177,19 @@ class MakeRequestModal extends Component<ModalProps, States> {
                                     placeholder="Additional comments"
                                     onChange={this.handleChange}
                                 />
+                            </div>
+                            <div className="methodselection">
+                                <div className="methodlabel"> Select the method to send your request</div>
+                                <CheckBox
+                                    name="emailMethod"
+                                    value={this.state.emailMethod}
+                                    onChange={this.handleChange}
+                                >Email - send message</CheckBox>
+                                <CheckBox
+                                    name="gitHubMethod"
+                                    value={this.state.gitHubMethod}
+                                    onChange={this.handleChange}
+                                >Github - create issue </CheckBox>
                             </div>
                         </div>
 
