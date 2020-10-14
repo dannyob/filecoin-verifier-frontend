@@ -58,9 +58,17 @@ class MakeRequestModal extends Component<ModalProps, States> {
     componentDidMount() {
     }
 
-    handleSubmit = async (e: any) => {
-        e.preventDefault()
+    handleSubmit = async (e:any) => {
+        e.prevetDefault()
+        if(this.state.gitHubMethod){
+            this.handleGithubSubmit()
+        }
+        if(this.state.emailMethod){
+            this.handleEmailSubmit()
+        }
+    }
 
+    handleEmailSubmit = async () => {
         const emailrequest = await fetch(config.apiUri + '/api/v1/email/requestDatacap', {
             method: 'POST',
             headers: {
@@ -90,7 +98,28 @@ class MakeRequestModal extends Component<ModalProps, States> {
         this.setState({ submitLoading: false })
     }
 
+    handleGithubSubmit = async () => {
+        this.setState({ submitLoading: true })
+        this.context.createRequest({
+            address: this.state.address,
+            datacap: this.state.datacap + this.state.datacapExt,
+            organization: this.state.organization,
+            publicprofile: this.state.publicprofile,
+            useplan: this.state.useplan,
+            contact: this.state.contact,
+            comments: this.state.comments
+        })
+        dispatchCustomEvent({ name: "delete-modal", detail: {} })
+        this.setState({ submitLoading: false })
+    }
+
     handleChange = (e: any) => {
+        if(e.target.name === 'gitHubMethod'){
+            this.setState({emailMethod: false})
+        }
+        if(e.target.name === 'emailMethod'){
+            this.setState({gitHubMethod: false})
+        }
         this.setState({ [e.target.name]: e.target.value } as any)
     }
 
