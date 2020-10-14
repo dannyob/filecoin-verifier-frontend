@@ -718,11 +718,116 @@
     left: 0;
     right: 0;
     background: #fff;
-    top: 220px;
+    top: 540px;
     text-align: center;
     display: flex;
     border-left: 1px solid #0091FF;
     border-right: 1px solid #0091FF;
+    box-sizing: border-box;
+
+    .data {
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #1A1A1A;
+      display: block;
+      flex: 95%;
+    }
+
+    .checks {
+      flex: 5%;
+      margin-top: 50px;
+
+      figure {
+        margin-left: 20px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+.verifiersB{
+  button{
+    position: relative;
+    top: 30px;
+    margin-right: 80px;
+    height: 20px;
+    left: 0px;
+    right: 0px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    width: 180px;
+    background: #0091FF;
+    
+  }
+}
+
+.container{
+  .automatictitle {
+    position: absolute;
+    top: 260px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding-left: 60px;
+    padding-top: 15px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+
+  }
+
+  .generaltitle{
+    position: absolute;
+    top: 490px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding-left: 60px;
+    padding-top: 15px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+
+
+.verifiersB {
+  .tableverifiers {
+    padding-top: 50px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+    height: 600px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    top: 260px;
+    text-align: center;
+    display: flex;
     box-sizing: border-box;
 
     .data {
@@ -763,4 +868,13 @@
       border-radius: 4px;
     }
   }
+}
+
+.tablebwrapper .verifiers .tableverifiers{
+  height: 200px;
+}
+
+.automatictitle, .verifiersB, .tableverifiers, .generaltitle{
+  border-left: 1px solid #0091FF;
+  border-right: 1px solid #0091FF;
 }

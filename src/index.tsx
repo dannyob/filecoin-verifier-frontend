@@ -13,6 +13,7 @@ import Landing from './pages/Landing';
 import LandingB from './pages/LandingB';
 import history from './context/History';
 import Verifiers from './pages/Verifiers';
+import VerifiersB from './pages/VerifiersB';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.render(
           <Route exact path={'/landing'} component={Landing} ></Route>
           <Route exact path={'/landingB'} component={LandingB} ></Route>
           <Route exact path={'/verifiers'} component={Verifiers} ></Route>
+          <Route exact path={'/verifiersB'} component={VerifiersB} ></Route>
         </Switch>
       </Router>
       <GlobalNotification style={{ bottom: 0, right: 0 }} />
