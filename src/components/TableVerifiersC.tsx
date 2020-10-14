@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 // @ts-ignore
-import { Table, CheckBox, dispatchCustomEvent, ButtonPrimary } from "slate-react-system";
-import MakeRequestModal from '../MakeRequestModal';
+import { Table, CheckBox, dispatchCustomEvent } from "slate-react-system";
+import MakeRequestModalC from '../MakeRequestModalC';
 
-export default class TablePrivateVerifiers extends Component {
+export default class TableVerifiersC extends Component {
 
     columns = [
         { key: "name", name: "Notary Name", type: "FILE_LINK", width: "98px" },
@@ -34,7 +34,7 @@ export default class TablePrivateVerifiers extends Component {
     }
 
     getList = async () => {
-        const verifiers = require('../data/private-verifiers.json').notarys;
+        const verifiers = require('../data/verifiersC.json').notarys;
         this.setState({ verifiers })
     }
 
@@ -50,12 +50,18 @@ export default class TablePrivateVerifiers extends Component {
     }
 
     contactVerifier = async () => {
-        window.open('https://verify.glif.io/', '_blank');
+        let verifier: any = this.state.verifiers[this.state.selectedVerifier]
+        dispatchCustomEvent({
+            name: "create-modal", detail: {
+                id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5),
+                modal: <MakeRequestModalC verifier={verifier} />
+            }
+        })
     }
 
     public render() {
         return (
-            <div className="verifiersB">
+            <div className="verifiers">
                 <div className="tableverifiers">
                     <div className="checks">
                         {this.state.verifiers.map((_, i) => {
@@ -75,9 +81,6 @@ export default class TablePrivateVerifiers extends Component {
                             }}
                             name="verifiers"
                         />
-                        <ButtonPrimary onClick={() => this.contactVerifier()}>
-                            Get Verified
-                        </ButtonPrimary>
                     </div>
                 </div>
             </div>

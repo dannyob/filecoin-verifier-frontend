@@ -718,7 +718,7 @@
     left: 0;
     right: 0;
     background: #fff;
-    top: 540px;
+    top: 220px;
     text-align: center;
     display: flex;
     border-left: 1px solid #0091FF;
@@ -872,9 +872,38 @@
 
 .tablebwrapper .verifiers .tableverifiers{
   height: 200px;
+  top: 540px !important; 
 }
 
 .automatictitle, .verifiersB, .tableverifiers, .generaltitle{
   border-left: 1px solid #0091FF;
   border-right: 1px solid #0091FF;
+}
+
+.modalautomatic{
+  height: 400px;
+  width: 400px;
+
+  .automatictext{
+    padding-top: 25px;
+    padding-left: 40px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  button{
+    position: relative;
+    top: 20px;
+    left: 40px;
+    height: 20px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    width: 180px;
+    background: #0091FF;
+  }
 }

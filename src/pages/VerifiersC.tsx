@@ -3,11 +3,9 @@ import Logo from '../logo.svg';
 // @ts-ignore
 import { ButtonPrimary } from "slate-react-system";
 import Welcome from '../components/Welcome'
-import TableVerifiers from '../components/TableVerifiers';
-import TablePrivateVerifiers from '../components/TablePrivateVerifiers';
+import TableVerifiersC from '../components/TableVerifiersC';
 
-
-class VerifiersB extends Component<{}> {
+class VerifiersC extends Component<{}> {
 
   child: any
 
@@ -29,11 +27,7 @@ class VerifiersB extends Component<{}> {
         </div>
         <div className="container">
           <Welcome />
-          <div className="tablebwrapper">
-          <div className="automatictitle">Automatic notarys</div>
-          <TablePrivateVerifiers />
-          <div className="generaltitle">General verifications</div>
-          <TableVerifiers ref={this.child} />
+          <TableVerifiersC ref={this.child} />
           <div className="started">
             <div className="doublebutton">
               <ButtonPrimary onClick={() => this.makeRequest()}>
@@ -42,11 +36,10 @@ class VerifiersB extends Component<{}> {
               <ButtonPrimary>Learn More</ButtonPrimary>
             </div>
           </div>
-          </div>
         </div>
       </div>
     );
   }
 }
 
-export default VerifiersB;
+export default VerifiersC;

@@ -1,0 +1,35 @@
+{
+    "notarys" : [
+        {
+            "id": 1,
+            "name": "Notary A",
+            "use_case": "General verifier",
+            "location": "US",
+            "website": "google.com",
+            "total_datacap": 1000000000000000,
+            "email": "notarya@a.com",
+            "private_request": "Yes"
+        },
+        {
+            "id": 2,
+            "name": "Notary B",
+            "use_case": "General verifier",
+            "location": "EUR",
+            "website": "google.com",
+            "total_datacap": 1000000000000000,
+            "email": "notaryb@a.com",
+            "private_request": "No"
+        },
+        {
+            "id": 1,
+            "name": "Glif",
+            "use_case": "Automatic Verifier",
+            "location": "US",
+            "website": "verify.glif.io",
+            "total_datacap": 1000000000000000,
+            "email": "verify@a.com",
+            "private_request": "No"
+        }
+    ]
+
+}
