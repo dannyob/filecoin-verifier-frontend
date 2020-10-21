@@ -3,6 +3,7 @@ import { Wallet } from './context/Index'
 import { config } from './config'
 // @ts-ignore
 import { dispatchCustomEvent, Input, ButtonPrimary, SelectMenu, LoaderSpinner, CheckBox } from "slate-react-system";
+import ConfirmModal from './pages/ConfirmModal';
 
 type States = {
     address: string
@@ -98,8 +99,13 @@ class MakeRequestModal extends Component<ModalProps, States> {
         }
         this.setState({ submitLoading: false })
     }catch(error) {
-        // HANDLE ERROR
         console.log("ERROR: " + error)
+        dispatchCustomEvent({
+            name: "create-modal", detail: {
+                id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5),
+                modal: <ConfirmModal/>
+            }
+        })
     }
 
     }
@@ -215,7 +221,7 @@ class MakeRequestModal extends Component<ModalProps, States> {
                                 />
                             </div>
                             <div className="methodselection">
-                                <div className="methodlabel"> Select the method to send your request</div>
+                                <div className="methodlabel">Select the method to send your request</div>
                                 {this.props.verifier.private_request === "true" ? 
                                 <CheckBox
                                     name="emailMethod"
