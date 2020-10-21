@@ -39,7 +39,7 @@ class Header extends Component {
                     </div>
                 }
                 <div className="headerlogo" onClick={() => this.onClick()}><img src={Logo} alt="Filecoin" /></div>
-                <div className="headerrequest buttonnotfilled" onClick={() => this.onClick()}>
+                <div className="headerrequest buttonnotfilled">
                     <ButtonPrimary onClick={this.requestStatus}>Request status</ButtonPrimary>
                 </div>
             </div >
