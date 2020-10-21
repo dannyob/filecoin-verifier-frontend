@@ -73,39 +73,43 @@ export default class TableVerifiers extends Component {
         return (
             <div className="verifiers">
                 <div className="tableverifiers">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td>Notary Name</td>
-                                <td>Use case</td>
-                                <td>Location</td>
-                                <td>Website</td>
-                                <td>Max Datacap Allocation</td>
-                                <td>Private Requests</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.verifiers.map((verifier: any, i) =>
+                    {this.state.verifiers.length > 0 ?
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <input type="checkbox" key={i} name={String(i)}
-                                            checked={this.state.checks[i]}
-                                            onChange={(e) => this.updateChecks(e)}
-                                        />
-                                    </td>
-                                    <td>{verifier.name}</td>
-                                    <td>{verifier.use_case.map((useCase: any) =>
-                                        <p style={{ padding: 3 }}>{useCase}</p>
-                                    )}</td>
-                                    <td>{verifier.location}</td>
-                                    <td>{verifier.website}</td>
-                                    <td>{verifier.max_datacap_allocation}</td>
-                                    <td>{verifier.private_request}</td>
+                                    <td></td>
+                                    <td>Notary Name</td>
+                                    <td>Use case</td>
+                                    <td>Location</td>
+                                    <td>Website</td>
+                                    <td>Max Datacap Allocation</td>
+                                    <td>Private Requests</td>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.verifiers.map((verifier: any, i) =>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" key={i} name={String(i)}
+                                                    checked={this.state.checks[i]}
+                                                    onChange={(e) => this.updateChecks(e)}
+                                                />
+                                            </td>
+                                            <td>{verifier.name}</td>
+                                            <td>{verifier.use_case.map((useCase: any) =>
+                                                <p style={{ padding: 3 }}>{useCase}</p>
+                                            )}</td>
+                                            <td>{verifier.location}</td>
+                                            <td>{verifier.website}</td>
+                                            <td>{verifier.max_datacap_allocation}</td>
+                                            <td>{verifier.private_request}</td>
+                                        </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                        : <div className="nodata">There are not available notaries yet</div>}
                 </div>
             </div>
         )
