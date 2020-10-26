@@ -309,10 +309,11 @@ export default class Overview extends Component<{}, OverviewStates> {
                         { this.state.tabs === "0" && !this.context.githubLogged ?
                             <div id="githublogin">
                                 <LoginGithub
-                                    clientId="8e922e2845a6083ab65c"
+                                    clientId="Iv1.940c1b5a18b6566d"
+                                    //clientId="8e922e2845a6083ab65c"
                                     scope="repo"
                                     onSuccess={(response:any)=>{
-                                        this.context.loginGithub(response.code)
+                                        this.context.loginGithub(response.code, true)
                                     }}
                                     onFailure={(response:any)=>{
                                         console.log('failure', response)
@@ -414,10 +415,11 @@ export default class Overview extends Component<{}, OverviewStates> {
                         { this.state.tabs === "1" && !this.context.githubLogged ?
                             <div id="githublogin">
                                 <LoginGithub
-                                    clientId="8e922e2845a6083ab65c"
+                                    //clientId="8e922e2845a6083ab65c"
+                                    clientId="Iv1.940c1b5a18b6566d"
                                     scope="repo"
                                     onSuccess={(response:any)=>{
-                                        this.context.loginGithub(response.code)
+                                        this.context.loginGithub(response.code, true)
                                     }}
                                     onFailure={(response:any)=>{
                                         console.log('failure', response)

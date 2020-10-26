@@ -43,9 +43,9 @@ interface WalletProviderStates {
     dispatchNotification: any
 }
 
-async function getActiveAccounts  (api: any, accounts: any) {
+async function getActiveAccounts(api: any, accounts: any) {
     const accountsActive: any = {};
-    for(const acc of accounts){
+    for (const acc of accounts) {
         try {
             const key = await api.actorAddress(acc)
             accountsActive[acc] = key
@@ -57,9 +57,9 @@ async function getActiveAccounts  (api: any, accounts: any) {
 }
 
 export default class WalletProvider extends React.Component<{}, WalletProviderStates> {
-    setStateAsync(state:any) {
+    setStateAsync(state: any) {
         return new Promise((resolve) => {
-          this.setState(state, resolve)
+            this.setState(state, resolve)
         });
     }
     loadLedger = async () => {
@@ -130,48 +130,57 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         isLoading: false,
         githubLogged: false,
         githubOcto: {} as any,
-        loginGithub: async (code:string) => {
+        loginGithub: async (code: string, loadClients: boolean) => {
             try {
-                const authrequest = await fetch(config.apiUri+'/api/v1/github', {
+                const authrequest = await fetch(config.apiUri + '/api/v1/github', {
                     method: 'POST',
                     headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                      code
+                        code
                     })
                 })
                 const authjson = await authrequest.json()
                 localStorage.setItem('githubToken', authjson.data.access_token)
-                this.state.initGithubOcto(authjson.data.access_token)
+                this.state.initGithubOcto(authjson.data.access_token, loadClients)
             } catch (e) {
                 this.state.dispatchNotification('Failed to login. Try again later.')
             }
         },
-        initGithubOcto: async (token:string) => {
+        initGithubOcto: async (token: string, loadClients: boolean) => {
             const octokit = new Octokit({
                 auth: token
             })
-            this.setState({
-                githubLogged: true,
-                githubOcto: octokit
-            }, ()=>{
-                this.state.loadClientRequests()
-                this.state.loadClientsGithub()
-                this.state.loadVerified()
-                this.state.loadVerifierRequests()
-            })
+            loadClients ?
+                this.setState({
+                    githubLogged: true,
+                    githubOcto: octokit
+                }, () => {
+                    this.state.loadClientRequests()
+                    this.state.loadClientsGithub()
+                    this.state.loadVerified()
+                    this.state.loadVerifierRequests()
+                })
+                :
+                this.setState({
+                    githubLogged: true,
+                    githubOcto: octokit
+                })
         },
         loadClientRequests: async () => {
+            const user = await this.state.githubOcto.users.getAuthenticated();
             const rawIssues = await this.state.githubOcto.issues.listForRepo({
-              owner: 'keyko-io',
-              repo: 'filecoin-clients-onboarding'
+                owner: 'keyko-io',
+                repo: 'filecoin-clients-onboarding-test',
+                assignee: user.data.login
             })
+
             const issues: any[] = []
-            for(const rawIssue of rawIssues.data){
+            for (const rawIssue of rawIssues.data) {
                 const data = utils.parseIssue(rawIssue.body)
-                if(data.correct){
+                if (data.correct) {
                     issues.push({
                         number: rawIssue.number,
                         url: rawIssue.html_url,
@@ -186,13 +195,13 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         clientRequests: [],
         loadVerifierRequests: async () => {
             const rawIssues = await this.state.githubOcto.issues.listForRepo({
-              owner: 'keyko-io',
-              repo: 'filecoin-notaries-onboarding'
+                owner: 'keyko-io',
+                repo: 'filecoin-notaries-onboarding',
             })
             const issues: any[] = []
-            for(const rawIssue of rawIssues.data){
+            for (const rawIssue of rawIssues.data) {
                 const data = utils.parseIssue(rawIssue.body)
-                if(data.correct){
+                if (data.correct) {
                     issues.push({
                         number: rawIssue.number,
                         url: rawIssue.html_url,
@@ -205,36 +214,38 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
             })
         },
         verifierRequests: [],
-        createVerifierRequest: async (data:any) => {
+        createVerifierRequest: async (data: any) => {
             try {
                 const issue = await this.state.githubOcto.issues.create({
                     owner: 'keyko-io',
                     repo: 'filecoin-notaries-onboarding',
-                    title: 'Notary request for: '+data.organization,
+                    title: 'Notary request for: ' + data.organization,
                     body: IssueVerifierBody(data)
                 });
-                if(issue.status === 201){
-                    this.state.dispatchNotification('Request submited as #'+issue.data.number)
+                if (issue.status === 201) {
+                    this.state.dispatchNotification('Request submited as #' + issue.data.number)
                     this.state.loadVerifierRequests()
-                }else{
+                } else {
                     this.state.dispatchNotification('Something went wrong.')
                 }
             } catch (error) {
                 this.state.dispatchNotification(error.toString())
             }
         },
-        createRequest: async (data:any) => {
+        createRequest: async (data: any) => {
+            console.log(this.state.githubOcto)
             try {
                 const issue = await this.state.githubOcto.issues.create({
                     owner: 'keyko-io',
-                    repo: 'filecoin-clients-onboarding',
-                    title: 'Data Cap Request for: '+data.organization,
-                    body: IssueBody(data)
+                    repo: 'filecoin-clients-onboarding-test ',
+                    title: 'Data Cap Request for: ' + data.organization,
+                    body: IssueBody(data),
+                    assignees: data.assignees
                 });
-                if(issue.status === 201){
-                    this.state.dispatchNotification('Request submited as #'+issue.data.number)
+                if (issue.status === 201) {
+                    this.state.dispatchNotification('Request submited as #' + issue.data.number)
                     this.state.loadClientRequests()
-                }else{
+                } else {
                     this.state.dispatchNotification('Something went wrong.')
                 }
             } catch (error) {
@@ -248,20 +259,20 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
                 repo: 'filecoin-clients-onboarding',
                 state: 'closed',
                 labels: 'state:Granted'
-              })
+            })
             const issues: any = {}
-            for(const rawIssue of rawIssues.data){
+            for (const rawIssue of rawIssues.data) {
                 const data = utils.parseIssue(rawIssue.body)
                 try {
                     const address = await this.state.api.actorKey(data.address)
-                    if(data.correct && address){
-                        issues[address]= {
+                    if (data.correct && address) {
+                        issues[address] = {
                             number: rawIssue.number,
                             url: rawIssue.html_url,
                             data
                         }
                     }
-                } catch(e) {
+                } catch (e) {
                     // console.log(e)
                 }
             }
@@ -271,7 +282,7 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         },
         viewroot: false,
         switchview: async () => {
-            if(this.state.viewroot){
+            if (this.state.viewroot) {
                 this.setState({ viewroot: false })
             } else {
                 this.setState({ viewroot: true })
@@ -279,8 +290,8 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         },
         wallet: '',
         api: {} as any,
-        sign: async () => {},
-        getAccounts: async () => {},
+        sign: async () => { },
+        getAccounts: async () => { },
         walletIndex: 0,
         importSeed: async (seedphrase: string) => {
             const wallet = new BurnerWallet()
@@ -304,7 +315,7 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         loadVerified: async () => {
             const approvedVerifiers = await this.state.api.listVerifiers()
             let verified = []
-            for(const verifiedAddress of approvedVerifiers){
+            for (const verifiedAddress of approvedVerifiers) {
                 const verifierAccount = await this.state.api.actorKey(verifiedAddress.verifier)
                 verified.push({
                     verifier: verifiedAddress.verifier,
@@ -312,7 +323,7 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
                     datacap: verifiedAddress.datacap
                 })
             }
-            this.setState({verified})
+            this.setState({ verified })
         },
         activeAccount: '',
         accounts: [],
@@ -320,12 +331,14 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         balance: 0,
         message: '',
         dispatchNotification: (message: string) => {
-            dispatchCustomEvent({ name: "create-notification", detail: {
-                id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5),
-                description: message,
-                dark: true,
-                timeout: 5000
-            }});
+            dispatchCustomEvent({
+                name: "create-notification", detail: {
+                    id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5),
+                    description: message,
+                    dark: true,
+                    timeout: 5000
+                }
+            });
         },
         selectAccount: async (index: number) => {
             try {
@@ -339,7 +352,7 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
             }
         },
         selectNetwork: async (networkIndex: number) => {
-            this.setState({ networkIndex }, async()=>{
+            this.setState({ networkIndex }, async () => {
                 switch (this.state.wallet) {
                     case 'ledger':
                         this.loadLedger()
@@ -350,8 +363,8 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
                 }
             })
         },
-        loadWallet: async (type:string) => {
-            this.setState({isLoading:true})
+        loadWallet: async (type: string) => {
+            this.setState({ isLoading: true })
             switch (type) {
                 case 'Ledger':
                     return this.loadLedger()
@@ -361,10 +374,10 @@ export default class WalletProvider extends React.Component<{}, WalletProviderSt
         }
     }
 
-    loadGithub () {
+    loadGithub() {
         const githubToken = localStorage.getItem('githubToken')!
-        if(githubToken && this.state.isLogged){
-            this.state.initGithubOcto(githubToken)
+        if (githubToken && this.state.isLogged) {
+            this.state.initGithubOcto(githubToken, true)
         }
     }
 

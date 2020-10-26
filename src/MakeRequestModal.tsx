@@ -4,6 +4,9 @@ import { config } from './config'
 // @ts-ignore
 import { dispatchCustomEvent, Input, ButtonPrimary, SelectMenu, LoaderSpinner, CheckBox } from "slate-react-system";
 import ConfirmModal from './pages/ConfirmModal';
+// @ts-ignore
+import LoginGithub from 'react-login-github';
+
 
 type States = {
     address: string
@@ -30,7 +33,8 @@ type ModalProps = {
         website: string,
         total_datacap: number,
         email: string,
-        private_request: string
+        private_request: string,
+        github_user: string
     }
 }
 
@@ -124,7 +128,8 @@ class MakeRequestModal extends Component<ModalProps, States> {
             publicprofile: this.state.publicprofile,
             useplan: this.state.useplan,
             contact: this.state.contact,
-            comments: this.state.comments
+            comments: this.state.comments,
+            assignees: [this.props.verifier.github_user]
         })
         dispatchCustomEvent({ name: "delete-modal", detail: {} })
         this.setState({ submitLoading: false })
@@ -240,6 +245,19 @@ class MakeRequestModal extends Component<ModalProps, States> {
                                     value={this.state.gitHubMethod}
                                     onChange={this.handleChange}
                                 >Github - create issue </CheckBox>
+                                <div id="githublogin">
+                                    <LoginGithub
+                                        //clientId="8e922e2845a6083ab65c"
+                                        clientId="Iv1.940c1b5a18b6566d"
+                                        scope="repo"
+                                        onSuccess={(response: any) => {
+                                            this.context.loginGithub(response.code, false)
+                                        }}
+                                        onFailure={(response: any) => {
+                                            console.log('failure', response)
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
 
