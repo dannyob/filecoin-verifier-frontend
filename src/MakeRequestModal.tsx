@@ -163,18 +163,7 @@ class MakeRequestModal extends Component<ModalProps, States> {
                                     onChange={this.handleChange}
                                 />
                             </div>
-                            <div className="inputholder">
-                                <Input
-                                    description="Contact Information"
-                                    name="contact"
-                                    value={this.state.contact}
-                                    placeholder="Contact of Proposer"
-                                    onChange={this.handleChange}
-                                />
-                            </div>
                         </div>
-
-
                         <div>
                             <div className="inputholder">
                                 <Input
@@ -206,14 +195,6 @@ class MakeRequestModal extends Component<ModalProps, States> {
                             </div>
                             <div className="methodselection">
                                 <div className="methodlabel">Select the method to send your request</div>
-                                {this.props.verifier.private_request === "true" ?
-                                    <CheckBox
-                                        name="emailMethod"
-                                        value={this.state.emailMethod}
-                                        onChange={this.handleChange}
-                                    >Email - send message</CheckBox>
-                                    : null
-                                }
                                 <CheckBox
                                     name="gitHubMethod"
                                     value={this.state.gitHubMethod}
