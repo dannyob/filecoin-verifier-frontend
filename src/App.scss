@@ -404,6 +404,7 @@
     }
   }
 
+
   .methodselection {
     margin-top: 15px;
 
@@ -981,3 +982,34 @@
 
 
 }
+
+.addmodal{
+    max-height: 650px;
+    overflow-y: scroll;
+
+    .inputext{
+      margin-left: 40px;
+      margin-right: 40px;
+      margin-top: 20px;
+    }
+      .inputext .css-1pck2x{
+        max-width: 800px;
+    }
+
+    .inputext .css-1ev2p8p:first-child {
+      max-width: 800px;
+    }
+
+    .inputext input{
+      height: 80px;
+    }
+    .subtitle{
+      margin-left: 40px;
+      margin-right: 40px;
+      font-style: normal;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+}
+
+

@@ -221,7 +221,114 @@ class MakeRequestModal extends Component<ModalProps, States> {
                                 >Github - create issue </CheckBox>
                             </div>
                         </div>
+                    </div>
+                    <div className="optionalinfo">
+                        <div className="title">Additional Information</div>
+                        <div className="subtitle">Reputation</div>
+                        <div className="inputext">
+                            <Input
+                                description="Please describe the nature of your organization, project, or use case. For organizations, please include your relationship with the organization the size of the organization, and time since inception. For projects and other use cases, please link to relevant web pages or Github. Please include as much relevant detail to provide contextual information (with external links)."
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Please describe the nature of your organization, project, or use case. For organizations, please include your relationship with the organization the size of the organization, and time since inception. For projects and other use cases, please link to relevant web pages or Github. Please include as much relevant detail to provide contextual information (with external links)."
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="subtitle">Allocation Strategy</div>
+                        <div className="inputext">
+                            <Input
+                                description="Do you intend to store your data in a single geography or many?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Are you aware of and do you intend to use the features you may specify (e.g. Fast Retrieval) with your storage deals?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="How do you plan on securing the DataCap to ensure your organization (and its delegated members) are the ones allocating the DataCap?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Do you plan on allocating a substantial portion of your DataCap to a single miner, or will you spread it across many miners?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="For application developers, will you be acting as the client on behalf of your users or you applying as a Notary on behalf of your users? If so, how much DataCap per user are you seeking to have approved?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Do you agree to use the DataCap to only store data that abides by local regulations and in compliance with the recipient miner’s terms of service?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
 
+                        <div className="subtitle">Track Record</div>
+                        <div className="inputext">
+                            <Input
+                                description="Have you previously received DataCap to allocate before? If so, please link to any previous decisions that have been made."
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Are there any disputes open against you from your previous DataCap allocations?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
+                        <div className="inputext">
+                            <Input
+                                description="Have you ever previously violated:
+                                     -Your own attested allocation / audit plan? 
+                                     -Been found to be in violation of the Principles of Filecoin Plus?"
+                                name="organization"
+                                value={this.state.organization}
+                                onChange={this.handleChange}
+                                full={true}
+                            />
+                        </div>
                     </div>
                     <div className="centerbutton">
                         <ButtonPrimary onClick={this.handleSubmit}>{this.state.submitLoading ? <LoaderSpinner /> : 'Send Request'}</ButtonPrimary>
