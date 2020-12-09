@@ -109,7 +109,9 @@ class App extends Component<{}, States> {
 
   search = async (event: any) => {
     event.preventDefault()
-    this.context.search(this.state.search)
+    history.push({
+      pathname: "/search?q="+this.state.search
+    })
   }
 
   render() {

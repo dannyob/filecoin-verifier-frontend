@@ -234,7 +234,6 @@ export default class DataProvider extends React.Component<DataProviderProps, Dat
                         q: `${query} in:body is:issue repo:${config.lotusNodes[this.props.wallet.networkIndex].clientOwner}/${config.lotusNodes[this.props.wallet.networkIndex].clientRepo}`
                     })
                 }
-                console.log('results', results)
                 return results
             },
             refreshGithubData: async () => {

@@ -16,6 +16,7 @@ import Onboarding from './pages/Onboarding';
 import Landing from './pages/Landing';
 import history from './context/History';
 import Verifiers from './pages/Verifiers';
+import Search from './pages/Search';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -32,6 +33,7 @@ ReactDOM.render(
                         <Route path={'/app'} component={App} ></Route>
                         <Route path={'/wallet'} component={Preonboarding} ></Route>
                         <Route path={'/landing'} component={Landing} ></Route>
+                        <Route path={'/search'} component={Search} ></Route>
                         <Route path={'/verifiers'} component={Verifiers} ></Route>
                       </Switch>
                     </Router>
