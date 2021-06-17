@@ -1,6 +1,7 @@
 export const config = {
     apiUri: process.env.REACT_APP_API_URI || 'http://localhost:4000',
     apiToken: process.env.REACT_APP_API_TOKEN || '',
+    externalApiUri: 'https://api.filplus.d.interplanetary.one',
     onboardingClientRepo: process.env.REACT_APP_ONBOARDING_REPO || 'filecoin-clients-onboarding-test',
     onboardingOwner: process.env.REACT_APP_ONBOARDING_REPO_OWNER || 'keyko-io',
     onboardingLargeClientRepo: process.env.REACT_APP_ONBOARDING_LARGE_REPO || 'filecoin-large-clients-onboarding',

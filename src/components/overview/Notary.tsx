@@ -14,8 +14,8 @@ import WarnModalVerify from '../../modals/WarnModalVerify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { tableElementFilter } from '../../utils/SortFilter';
 import Pagination from '../Pagination';
-import history from '../../context/History'
-
+import history from '../../context/History';
+import ApiService from '../../api/api.service';
 
 
 type NotaryStates = {
@@ -188,6 +188,14 @@ export default class Notary extends Component<NotaryProps, NotaryStates> {
                     }
                     // github update
                     this.context.updateGithubVerified(request.number, messageID, address, request.data.datacap)
+                    const postData = {
+                        issueId: '',
+                        messageId: '',
+                        verifierAddressId: '',
+                        applicantName: '',
+                        applicantLocation: ''
+                    }
+                    ApiService.storeGhDataCapRequest(postData);
 
                     // send notifications
                     this.context.wallet.dispatchNotification('Verify Client Message sent with ID: ' + messageID)
