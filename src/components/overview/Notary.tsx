@@ -189,11 +189,11 @@ export default class Notary extends Component<NotaryProps, NotaryStates> {
                     // github update
                     this.context.updateGithubVerified(request.number, messageID, address, request.data.datacap)
                     const postData = {
-                        issueId: '',
-                        messageId: '',
-                        verifierAddressId: '',
-                        applicantName: '',
-                        applicantLocation: ''
+                        issueId: request.number,
+                        messageId: messageID,
+                        verifierAddressId: this.context.wallet.activeAccount,
+                        applicantName: request.data.name,
+                        applicantLocation: request.data.region
                     }
                     ApiService.storeGhDataCapRequest(postData);
 
