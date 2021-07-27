@@ -9,8 +9,20 @@ import TableCell from '../components/TableCell'
 import { PuffLoader } from "react-spinners";
 import { bytesToiB } from '../utils/Filters';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { tableFilter, tableSort } from '../utils/SortFilter';
 
-const NUMBER_OF_PAGES = 9;
+const NUMBER_OF_ROWS = 9;
+interface Miner {
+    id: number,
+    name: string,
+    location: string,
+    minerId: string
+    contacts: {
+        id: number,
+        slack: string,
+        href: string
+    }
+}
 export default class TableVerifiers extends Component {
     public static contextType = Data
     state = {
@@ -23,19 +35,21 @@ export default class TableVerifiers extends Component {
         reputationScore: new Array(),
         loadingApiData: true,
         initialIndex: 0,
-        finalIndex: NUMBER_OF_PAGES,
+        finalIndex: NUMBER_OF_ROWS,
         pages: [],
-        actualPage: 1
+        actualPage: 1,
+        orderBy: "name",
+        sortOrder: -1
     }
 
     columns = [
-        { key: "miner", name: "Miner" },
-        { key: "location", name: "Location" },
-        { key: "miner_id", name: "Miner ID" },
-        { key: "contact_info", name: "Contact Info" },
-        { key: "flst_price_for_verified_deals", name: "Last Price for Verified Deals", info: true },
-        { key: "min_piece_size", name: "Min Piece Size", info: true },
-        { key: "reputation_score", name: "Reputation Score", info: true }
+        { key: "name", name: "Miner", sort: true },
+        { key: "location", name: "Location", sort: true },
+        { key: "minerId", name: "Miner ID", sort: true },
+        { key: "contact_info", name: "Contact Info", sort: false },
+        { key: "flst_price_for_verified_deals", name: "Last Price for Verified Deals", info: true, sort: true },
+        { key: "min_piece_size", name: "Min Piece Size", info: true, sort: true  },
+        { key: "reputation_score", name: "Reputation Score", info: true, sort: true }
     ]
 
 
@@ -47,12 +61,13 @@ export default class TableVerifiers extends Component {
     setPage = async (e: any) => {
         const actualPage = Number(e.target.id)
         this.setState({
-            finalIndex: actualPage * NUMBER_OF_PAGES,
-            initialIndex: (actualPage * NUMBER_OF_PAGES) - NUMBER_OF_PAGES,
-            actualPage
+            finalIndex: actualPage * NUMBER_OF_ROWS,
+            initialIndex: (actualPage * NUMBER_OF_ROWS) - NUMBER_OF_ROWS,
+            actualPage,
         }, () => {
             this.fetchApiData(this.state.minersIds.slice(this.state.initialIndex, this.state.finalIndex))
         })
+
     }
 
     checkIndex = (index: number) => {
@@ -63,8 +78,8 @@ export default class TableVerifiers extends Component {
         const page = this.state.actualPage + index
         if (page <= this.state.pages.length && page >= 1) {
             this.setState({
-                finalIndex: page * NUMBER_OF_PAGES,
-                initialIndex: (page * NUMBER_OF_PAGES) - NUMBER_OF_PAGES,
+                finalIndex: page * NUMBER_OF_ROWS,
+                initialIndex: (page * NUMBER_OF_ROWS) - NUMBER_OF_ROWS,
                 actualPage: page,
             }, () => {
                 this.fetchApiData(this.state.minersIds.slice(this.state.initialIndex, this.state.finalIndex))
@@ -80,18 +95,34 @@ export default class TableVerifiers extends Component {
         const json = parse(html);
         const miners = json[2].children[3].children
             .filter((ele: any) => ele.type === "element")
+            .map((m: any, i: number = 0) => {
+                let index = i++
+                let miner: Miner = {
+                    id: index,
+                    name: m.children[1].children[0].content,
+                    location: m.children[3].children[0].content,
+                    minerId: m.children[5].children[0].content,
+                    contacts: {
+                        id: index,
+                        slack: m.children[7].children[0].content.slice(m.children[7].children[0].content.indexOf(":") + 2, m.children[7].children[0].content.indexOf("&")),
+                        href: m.children[7].children[1]?.children[0]?.content
+                    }
+                }
+                return miner
+            })
+
         this.setState({ miners })
 
-        const numerOfPages = Math.ceil(this.state.miners.length / NUMBER_OF_PAGES)
+        const numerOfPages = Math.ceil(this.state.miners.length / NUMBER_OF_ROWS)
         let pages = []
         for (let index = 0; index < numerOfPages; index++) {
             pages.push(index + 1)
         }
         this.setState({ pages })
 
-        const minersIds = miners.map((miner: any) => miner.children[5].children[0].content)
+        const minersIds = miners.map((miner: any) => miner.minerId)
         this.setState({ minersIds })
-        await this.fetchApiData(minersIds.slice(0, NUMBER_OF_PAGES))
+        await this.fetchApiData(minersIds.slice(0, NUMBER_OF_ROWS))
     }
 
     formatFil(val: string) {
@@ -119,7 +150,6 @@ export default class TableVerifiers extends Component {
     }
 
     fetchApiData = async (minersIds: any[]) => {
-        console.log(minersIds)
         Promise.all(
             minersIds.map(async id => {
                 let opts = {
@@ -139,21 +169,23 @@ export default class TableVerifiers extends Component {
 
                 const res = await fetch(`https://api.filrep.io/api/v1/miners?search=${id}`, opts)
                 const json = await res.json()
-              
-                let verPrice = {}
-                let minSize = {}
-                let rep = {}
+
+                let verPrice: any = {}
+                let minSize: any = {}
+                let rep: any = {}
 
                 if (!isPriceInList) {
                     verPrice = {
                         address: id,
                         price: json.miners[0]?.verifiedPrice ? this.formatFil(json.miners[0]?.verifiedPrice) : "not found"
                     }
+
                     this.setState({
                         verifiedPrice: [...this.state.verifiedPrice, verPrice],
                     }, () => {
-                        // console.log(this.state.verifiedPrice)
+                        // console.log(this.state.minPieceSize)
                     })
+
                 }
 
 
@@ -187,8 +219,52 @@ export default class TableVerifiers extends Component {
             return
         })
 
+    }
+
+    order = async (e: any, async : boolean) => {
+        if(!async){
+            const { arraySorted, orderBy, sortOrder } = tableSort(e, this.state.miners as [], this.state.orderBy, this.state.sortOrder)
+            this.setState({
+                miners: arraySorted,
+                sortOrder: sortOrder,
+                orderBy: orderBy,
+                minersIds: arraySorted.map((item: any) => item.minerId)
+            },
+                () =>
+                    this.fetchApiData(this.state.minersIds.slice(this.state.initialIndex, this.state.finalIndex))
+            )
+        }else{
+            console.log("inside else")
+            await this.fetchApiData(this.state.minersIds)
+        }
+    }
+
+
+    renderContact = (contacts: any) => {
+        if (contacts.href?.includes("@")) {
+            return <div className="contacvalue">
+                Slack
+                <FontAwesomeIcon title={contacts.slack} icon={["fas", "info-circle"]} />
+                <br></br>
+                <a href={`mailto:${contacts.href}`}>Email </a>
+            </div>
+        } else if (contacts.href === undefined) {
+            return <div className="contacvalue">
+                Slack
+                <FontAwesomeIcon title={contacts.slack} icon={["fas", "info-circle"]} />
+            </div>
+        } else {
+            return <div className="contacvalue">
+                Slack
+                <FontAwesomeIcon title={contacts.slack} icon={["fas", "info-circle"]} />
+                <br></br>
+                <a href={contacts.href}>Website</a>
+            </div>
+        }
 
     }
+
+
 
 
     public render() {
@@ -202,71 +278,66 @@ export default class TableVerifiers extends Component {
                                     item.info ?
                                         <td style={{ "textAlign": "center" }}>
                                             {item.name}
-                                            {/* <FontAwesomeIcon icon={["fas", "sort"]} id={item.key} /> */}
+                                            {
+                                            <FontAwesomeIcon icon={["fas", "sort"]} id={item.key} onClick={ async (e) => this.order(e, true)} />}
                                             <FontAwesomeIcon title={"This information is coming from filrep.io"} icon={["fas", "info-circle"]} />
-                                        </td> :
-                                        <td style={{ "textAlign": "center" }}>
-                                            {item.name}
-                                            {/* <FontAwesomeIcon icon={["fas", "sort"]} id={item.key} /> */}
-                                        </td>
+                                        </td> :  item.sort ?
+                                            <td style={{ "textAlign": "center" }}>
+                                                {item.name}
+                                                <FontAwesomeIcon icon={["fas", "sort"]} id={item.key} onClick={async (e) => this.order(e, false)} />
+                                            </td> :
+                                            <td style={{ "textAlign": "center" }}>
+                                                {item.name}
+                                            </td>
                                 )}
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.miners.map((miner: any, i) =>
+                            {this.state.miners.map((miner: Miner, i) =>
 
                                 this.checkIndex(i) ?
 
-                                    <tr key={i} >
+                                    <tr key={i} id={miner?.id.toString()}>
                                         <td style={{ "textAlign": "center" }}>
-                                            {miner.children[1].children[0].content}
+                                            {miner?.name}
                                         </td>
                                         <td style={{ "textAlign": "center" }}>
-                                            <TableCell
-                                                text={miner.children[3].children[0].content}
-                                                type="Location" />
+                                            {miner?.location.split(',')[0]}<br></br>{miner.location.split(',')[1]}
                                         </td>
                                         <td style={{ "textAlign": "center" }}>
-                                            <TableCell
-                                                text={miner.children[5].children[0].content} />
+                                            {miner?.minerId}
                                         </td>
-                                        <td style={{ "textAlign": "center" }}>
-                                            <TableCell
-                                                text={miner.children[7].children[0].content}
-                                                href={miner.children[7].children[1]}
-                                                type="Contact" />
+                                        <td style={{ "textAlign": "center" }} >
+
+                                            {this.renderContact(miner?.contacts)}
                                         </td>
                                         {/* <td>
                                             <TableCell
                                                 text={miner.children[11].children[0].content} />
                                         </td> */}
                                         <td style={{ "textAlign": "center" }}>
-                                            {this.state.verifiedPrice.find(item => item.address === miner.children[5].children[0].content) !== undefined ?
-                                                <TableCell
-                                                    text={this.state.verifiedPrice?.find(item => item.address === miner.children[5].children[0].content)?.price} />
+                                            {this.state.verifiedPrice.find(item => item.address === miner.minerId) !== undefined ?
+                                                this.state.verifiedPrice?.find(item => item.address === miner.minerId)?.price
                                                 :
                                                 <PuffLoader speedMultiplier={0.8} size={30} color={"rgb(24,160,237)"} />
                                             }
                                         </td>
                                         <td style={{ "textAlign": "center" }}>
-                                            {this.state.minPieceSize.find(item => item.address === miner.children[5].children[0].content) !== undefined ?
-                                                <TableCell
-                                                    text={this.state.minPieceSize?.find(item => item.address === miner.children[5].children[0].content)?.size} />
+                                            {this.state.minPieceSize.find(item => item.address === miner.minerId) !== undefined ?
+                                                this.state.minPieceSize?.find(item => item.address === miner.minerId)?.size
                                                 :
                                                 <PuffLoader speedMultiplier={0.8} size={30} color={"rgb(24,160,237)"} />
                                             }
                                         </td>
-                                        {this.state.reputationScore.find(item => item.address === miner.children[5].children[0].content) !== undefined ?
-                                            <td style={{
-                                                "textAlign": "center",
-                                                "color": this.state.reputationScore?.find(item => item.address === miner.children[5].children[0].content)?.color
-
-                                            }} 
+                                        {this.state.reputationScore.find(item => item.address === miner.minerId) !== undefined ?
+                                            <td style=
+                                                {{
+                                                    "textAlign": "center",
+                                                    "color": this.state.reputationScore?.find(item => item.address === miner.minerId)?.color
+                                                }}
                                             >
-
-                                                <TableCell
-                                                    text={this.state.reputationScore?.find(item => item.address === miner.children[5].children[0].content)?.reputation} />
-                                            </td>   
+                                                {this.state.reputationScore?.find(item => item.address === miner.minerId)?.reputation}
+                                            </td>
                                             :
                                             <td style={{ "textAlign": "center" }}>
                                                 <PuffLoader speedMultiplier={0.8} size={30} color={"rgb(24,160,237)"} />
