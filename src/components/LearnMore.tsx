@@ -9,10 +9,16 @@ class LearnMore extends Component {
           window.open('https://docs.filecoin.io/store/filecoin-plus/', '_blank')
       }
 
+    throwError = () => {
+        
+        throw new Error("This is to test the error handling");
+    }
+
     render() {
         return (
             <div className="learnmore">
               <ButtonPrimary onClick={() => this.navigate()}>Learn More</ButtonPrimary>
+              {/* <ButtonPrimary onClick={() => this.throwError()}>Learn More</ButtonPrimary> */}
             </div >
         )
     }

@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { tableElementFilter } from '../../utils/SortFilter';
 import Pagination from '../Pagination';
 import history from '../../context/History'
+import * as Sentry from "@sentry/react";
 
 
 
@@ -230,6 +231,7 @@ export default class Notary extends Component<NotaryProps, NotaryStates> {
                 } catch (e) {
                     this.context.wallet.dispatchNotification('Verification failed: ' + e.message)
                     console.log(e.stack)
+                    Sentry.captureException(e);
                 }
             }
         }
