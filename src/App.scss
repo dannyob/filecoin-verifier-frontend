@@ -1050,7 +1050,15 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-
+    
+    @keyframes tableAppearSmooth {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
 
     table {
       position: absolute;
@@ -1060,7 +1068,13 @@
       left: 0;
       right: 0;
       border-collapse: collapse;
+      opacity: 1;
+      -webkit-transition: opacity 2s;
+      transition: opacity 2s;
+      animation: 1.5s tableAppearSmooth;
     }
+
+    
 
     thead {
       font-weight: bold;
