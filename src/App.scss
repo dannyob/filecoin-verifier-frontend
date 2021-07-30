@@ -1034,7 +1034,11 @@
   border-bottom: 1px solid #0091ff;
 }
 
+
 .verifiers {
+
+  
+  
   .tableverifiers {
     position: absolute;
     margin-left: auto;
@@ -1047,10 +1051,14 @@
     top: 100px;
     text-align: center;
     display: flex;
-    justify-content: center;
-    align-items: center;
     box-sizing: border-box;
     
+    .minersTableLoadSpinner{
+      display: flex;
+      justify-content: center;
+      align-items: top;
+     }
+     
     @keyframes tableAppearSmooth {
       0% {
         opacity: 0;
@@ -1131,7 +1139,7 @@
   }
 
   .miners {
-    top: 0px !important;
+    top: 90px !important;
     text-align: left;
 
     a {
@@ -1142,6 +1150,7 @@
       padding-left: 3px;
     }
   }
+  
 }
 
 .preonboarding {

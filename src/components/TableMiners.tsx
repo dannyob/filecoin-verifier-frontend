@@ -11,8 +11,13 @@ import { bytesToiB } from '../utils/Filters';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { tableFilter, tableSort } from '../utils/SortFilter';
 
-const NUMBER_OF_ROWS = 9;
-interface Miner {
+type TableMinersProps = {
+    ref:any
+    search: string
+}
+
+const NUMBER_OF_ROWS = 8;
+type Miner = {
     id: number,
     name: string,
     location: string,
@@ -29,7 +34,14 @@ interface Miner {
     // reputationScore:string
 
 }
-export default class TableVerifiers extends Component {
+export default class TableMiners extends Component {
+    child: any
+    
+    constructor(props: TableMinersProps) {
+        super(props);
+        this.child = React.createRef();
+    }
+
     public static contextType = Data
     state = {
         selectedVerifier: 0,
@@ -42,7 +54,8 @@ export default class TableVerifiers extends Component {
         pages: [],
         actualPage: 1,
         orderBy: "name",
-        sortOrder: -1
+        sortOrder: -1,
+        allMiners:[]
     }
 
     columns = [
@@ -90,24 +103,24 @@ export default class TableVerifiers extends Component {
         try {
             const response = await fetch(config.minersUrl)
             const text = await response.text()
-    
+
             const html = parserMarkdown.render(text)
             const json = parse(html);
-    
+
             const minersIds = json[2].children[3].children.filter((ele: any) => ele.type === "element").map((m: any, i: number = 0) => m.children[5].children[0].content)
-    
+
             const res = await fetch(`https://api.filrep.io/api/v1/miners`)
             const apiData = await res.json()
             const filteredApiData = apiData.miners.filter((item: any) => minersIds.includes(item.address))
-    
+
             const miners = json[2].children[3].children
                 .filter((ele: any) => ele.type === "element")
                 .map((m: any, i: number = 0) => {
                     const verifiedPrice = filteredApiData.find((item: any) => item.address === m.children[5].children[0].content)?.verifiedPrice || "not found"
                     const minPieceSize = filteredApiData.find((item: any) => item.address === m.children[5].children[0].content)?.minPieceSize || "not found"
                     const reputationScore = filteredApiData.find((item: any) => item.address === m.children[5].children[0].content)?.scores.total || "not found"
-    
-    
+
+
                     const index = i++
                     const miner: Miner = {
                         id: index,
@@ -128,7 +141,7 @@ export default class TableVerifiers extends Component {
                 .sort((a: any, b: any) => {
                     return b.reputationScore - a.reputationScore;
                 })
-    
+
             const numerOfPages = Math.ceil(miners.length / NUMBER_OF_ROWS)
             let pages = []
             for (let index = 0; index < numerOfPages; index++) {
@@ -136,14 +149,15 @@ export default class TableVerifiers extends Component {
             }
             this.setState({
                 miners,
+                allMiners:miners,
                 pages,
                 minersIds,
                 loadingApiData: false
             })
         } catch (error) {
-            
+
         }
-       
+
 
     }
 
@@ -154,6 +168,12 @@ export default class TableVerifiers extends Component {
             sortOrder: sortOrder,
             orderBy: orderBy,
         })
+    }
+
+    filter = async (search: string) => {
+        const miners = await tableFilter(search, this.state.allMiners as [])
+        this.setState({ miners })
+        // React.createRef().current.calculatePages()
     }
 
     formatFil(val: string): string {
@@ -212,11 +232,14 @@ export default class TableVerifiers extends Component {
         if (this.state.loadingApiData) {
             return (
                 <div className="verifiers">
-                    <div className="tableverifiers miners">
-                        <ClimbingBoxLoader size={18} color={"rgb(24,160,237)"}/>
-                    </div>
+                    <div className="tableverifiers">
+                        <div className="verifiers tableverifiers minersTableLoadSpinner">
+                            <ClimbingBoxLoader size={18} color={"rgb(24,160,237)"} />
+                        </div>
 
-                </div>
+                    </div>
+                </div >
+
             )
         }
         return (
