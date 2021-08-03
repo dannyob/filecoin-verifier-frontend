@@ -25,6 +25,12 @@ const sortTableMiners = (arrayToSort: any[], orderBy: string, sortOrder: number)
                 filToAny(a[orderBy]) > filToAny(b[orderBy]) ?
                     sortOrder * -1 : 0;
         }
+        if (orderBy === "minPieceSize") {
+            return a["minPieceSizeRaw"] > b["minPieceSizeRaw"] ?
+                sortOrder :
+                a["minPieceSizeRaw"] < b["minPieceSizeRaw"] ?
+                    sortOrder * -1 : 0;
+        }
 
         return a[orderBy] < b[orderBy] ?
             sortOrder :

@@ -29,9 +29,8 @@ type Miner = {
     }
     verifiedPrice: string,
     minPieceSize: string,
+    minPieceSizeRaw: any, // to order the table
     reputationScore: string | number
-    // minPieceSize:string,
-    // reputationScore:string
 
 }
 export default class TableMiners extends Component {
@@ -136,6 +135,7 @@ export default class TableMiners extends Component {
                         },
                         verifiedPrice: anyToFil(verifiedPrice),
                         minPieceSize: minPieceSize === "not found" ? "not found" : bytesToiB(minPieceSize),
+                        minPieceSizeRaw: minPieceSize === "not found" ? -1 : Number(minPieceSize),
                         reputationScore: reputationScore === "not found" ? "not found" : Number(reputationScore),
                     }
                     return miner
