@@ -9,7 +9,7 @@ import TableCell from '../components/TableCell'
 import { ClimbingBoxLoader } from "react-spinners";
 import { bytesToiB } from '../utils/Filters';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { tableFilter, tableSort } from '../utils/SortFilter';
+import { tableMinerFilter, tableSort } from '../utils/SortFilter';
 
 type TableMinersProps = {
     ref:any
@@ -74,8 +74,10 @@ export default class TableMiners extends Component {
 
     }
 
-    setPage = async (e: any) => {
-        const actualPage = Number(e.target.id)
+    setPage = async (e: any, n?:any) => {
+        console.log("e", e)
+        console.log("n", n)
+        const actualPage = Number( e !== null ? e.target.id  : n )
         this.setState({
             finalIndex: actualPage * NUMBER_OF_ROWS,
             initialIndex: (actualPage * NUMBER_OF_ROWS) - NUMBER_OF_ROWS,
@@ -171,8 +173,10 @@ export default class TableMiners extends Component {
     }
 
     filter = async (search: string) => {
-        const miners = await tableFilter(search, this.state.allMiners as [])
+        console.log("this.state.allMiners", this.state.allMiners)
+        const miners = await tableMinerFilter(search, this.state.allMiners as [])
         this.setState({ miners })
+        this.setPage(null,1)
         // React.createRef().current.calculatePages()
     }
 
