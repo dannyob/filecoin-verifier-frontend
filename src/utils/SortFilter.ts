@@ -1,3 +1,4 @@
+import { filToAny } from '../utils/Filters';
 
 export const tableSort = (e: any, arrayToSort: any[], previousOrderBy: string, previousSortOrder: number) => {
     const orderBy = e.currentTarget.id
@@ -9,6 +10,30 @@ export const tableSort = (e: any, arrayToSort: any[], previousOrderBy: string, p
 
 }
 
+export const tableSortMiners = (e: any, arrayToSort: any[], previousOrderBy: string, previousSortOrder: number) => {
+    const orderBy = e.currentTarget.id
+    const sortOrder = orderBy === previousOrderBy ? previousSortOrder * -1 : -1
+    return sortTableMiners(arrayToSort, orderBy, sortOrder)
+
+}
+
+const sortTableMiners = (arrayToSort: any[], orderBy: string, sortOrder: number) => {
+    const arraySorted = arrayToSort.sort((a: any, b: any) => {
+        if (orderBy === "verifiedPrice") {
+            return filToAny(a[orderBy]) < filToAny(b[orderBy]) ?
+                sortOrder :
+                filToAny(a[orderBy]) > filToAny(b[orderBy]) ?
+                    sortOrder * -1 : 0;
+        }
+
+        return a[orderBy] < b[orderBy] ?
+            sortOrder :
+            a[orderBy] > b[orderBy] ?
+                sortOrder * -1 : 0;
+    });
+
+    return { arraySorted, orderBy, sortOrder }
+}
 
 const sortTable = (arrayToSort: any[], orderBy: string, sortOrder: number) => {
     const arraySorted = arrayToSort.sort((a: any, b: any) => {

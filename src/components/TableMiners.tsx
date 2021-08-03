@@ -7,12 +7,12 @@ import parserMarkdown from '../utils/Markdown'
 import { parse } from "himalaya";
 import TableCell from '../components/TableCell'
 import { ClimbingBoxLoader } from "react-spinners";
-import { bytesToiB } from '../utils/Filters';
+import { bytesToiB, anyToFil } from '../utils/Filters';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { tableMinerFilter, tableSort } from '../utils/SortFilter';
+import { tableMinerFilter, tableSortMiners } from '../utils/SortFilter';
 
 type TableMinersProps = {
-    ref:any
+    ref: any
     search: string
 }
 
@@ -36,7 +36,7 @@ type Miner = {
 }
 export default class TableMiners extends Component {
     child: any
-    
+
     constructor(props: TableMinersProps) {
         super(props);
         this.child = React.createRef();
@@ -55,7 +55,7 @@ export default class TableMiners extends Component {
         actualPage: 1,
         orderBy: "name",
         sortOrder: -1,
-        allMiners:[]
+        allMiners: []
     }
 
     columns = [
@@ -74,10 +74,10 @@ export default class TableMiners extends Component {
 
     }
 
-    setPage = async (e: any, n?:any) => {
+    setPage = async (e: any, n?: any) => {
         console.log("e", e)
         console.log("n", n)
-        const actualPage = Number( e !== null ? e.target.id  : n )
+        const actualPage = Number(e !== null ? e.target.id : n)
         this.setState({
             finalIndex: actualPage * NUMBER_OF_ROWS,
             initialIndex: (actualPage * NUMBER_OF_ROWS) - NUMBER_OF_ROWS,
@@ -134,7 +134,7 @@ export default class TableMiners extends Component {
                             slack: m.children[7].children[0].content.slice(m.children[7].children[0].content.indexOf(":") + 2, m.children[7].children[0].content.indexOf("&")),
                             href: m.children[7].children[1]?.children[0]?.content
                         },
-                        verifiedPrice: this.formatFil(verifiedPrice),
+                        verifiedPrice: anyToFil(verifiedPrice),
                         minPieceSize: minPieceSize === "not found" ? "not found" : bytesToiB(minPieceSize),
                         reputationScore: reputationScore === "not found" ? "not found" : Number(reputationScore),
                     }
@@ -151,7 +151,7 @@ export default class TableMiners extends Component {
             }
             this.setState({
                 miners,
-                allMiners:miners,
+                allMiners: miners,
                 pages,
                 minersIds,
                 loadingApiData: false
@@ -164,7 +164,7 @@ export default class TableMiners extends Component {
     }
 
     order = async (e: any) => {
-        const { arraySorted, orderBy, sortOrder } = tableSort(e, this.state.miners as [], this.state.orderBy, this.state.sortOrder)
+        const { arraySorted, orderBy, sortOrder } = tableSortMiners(e, this.state.miners as [], this.state.orderBy, this.state.sortOrder)
         this.setState({
             miners: arraySorted,
             sortOrder: sortOrder,
@@ -176,33 +176,8 @@ export default class TableMiners extends Component {
         console.log("this.state.allMiners", this.state.allMiners)
         const miners = await tableMinerFilter(search, this.state.allMiners as [])
         this.setState({ miners })
-        this.setPage(null,1)
+        this.setPage(null, 1)
         // React.createRef().current.calculatePages()
-    }
-
-    formatFil(val: string): string {
-        if (val === "not found") {
-            return val
-        }
-        const n = Number(val);
-        let retVal = ''
-        if (val === "0") {
-            retVal = '0 FIL'
-        }
-        if (val.length > 18) {
-            retVal = `${n / 1000000000000000000} FIL`
-            // console.log("/10^18 ", `${n/1000000000000000000} FIL`)
-        }
-        if (val.length <= 18 && val.length > 6) {
-            retVal = `${n / 1000000000} nanoFIL`
-            // console.log("/10^9 ", `${n/1000000000} nanoFIL`)
-        }
-        if (val.length <= 6) {
-            retVal = `${n / 1000} attoFIL`
-            // console.log("/10^9 ", `${n/1000} attoFIL`)
-        }
-        return retVal
-
     }
 
     renderContact = (contacts: any) => {
